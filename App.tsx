@@ -12,14 +12,20 @@ import {
   DarkTheme,
   DefaultTheme,
 } from '@react-navigation/native';
+import { store } from './src/store';
+import { Provider } from 'react-redux';
 
 function App() {
   const scheme = useColorScheme();
   return (
     <SafeAreaProvider>
-      <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <RootNavigator />
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer
+          theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <RootNavigator />
+        </NavigationContainer>
+      </Provider>
     </SafeAreaProvider>
   );
 }
