@@ -1,14 +1,29 @@
-import { View, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store';
 import UserList from '../../components/userList';
+import { fetchUsers } from '../../store/thunks/userThunks';
 
 const UsersScreen = () => {
-  const users = useSelector((state: RootState) => state.users.users);
+  const { users, loading, error } = useSelector((state: RootState) => ({
+    users: state.users.users,
+    loading: state.users.loading,
+    error: state.users.error,
+  }));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []);
 
   return (
     <View style={styles.container}>
-      <UserList data={users} />
+      {loading ? (
+        <ActivityIndicator size={'large'} />
+      ) : (
+        <UserList data={users} />
+      )}
     </View>
   );
 };
