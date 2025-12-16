@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../store';
 import UserList from '../../components/userList';
 
-const UsersScreen = () => {
-  const users = useSelector((state: RootState) => state.users.users);
+const FavUsers = () => {
+  const favUsers = useSelector((state: RootState) => state.favUsers.favUsers);
 
   return (
     <View style={styles.container}>
-      <UserList data={users} />
+      <UserList data={favUsers} />
     </View>
   );
 };
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UsersScreen;
+export default FavUsers;

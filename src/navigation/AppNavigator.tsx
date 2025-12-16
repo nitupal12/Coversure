@@ -1,8 +1,8 @@
 import { JSX } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
-import UserList from '../screens/user';
-import UserDetails from '../screens/details';
+import UsersScreen from '../screens/user';
+import FavUsers from '../screens/favUsers';
 import { TabRouteName, RenderTabIconParams } from './type';
 
 const Tab = createBottomTabNavigator();
@@ -24,6 +24,7 @@ const RootNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        headerTitle: '',
         tabBarIcon: ({ color, size }) =>
           renderTabIcon({
             routeName: route.name as TabRouteName,
@@ -32,8 +33,8 @@ const RootNavigator = () => {
           }),
       })}
     >
-      <Tab.Screen name="users" component={UserList} />
-      <Tab.Screen name="favorite" component={UserDetails} />
+      <Tab.Screen name="users" component={UsersScreen} />
+      <Tab.Screen name="favorite" component={FavUsers} />
     </Tab.Navigator>
   );
 };
