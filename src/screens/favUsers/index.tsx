@@ -4,7 +4,7 @@ import type { RootState } from '../../store';
 import UserList from '../../components/userList/userList';
 
 const FavUsers = () => {
-  const favUsers = useSelector((state: RootState) => state.favUsers.favUsers);
+  const favUsers = useSelector((state: RootState) => state.favorite.favUsers);
 
   return (
     <View style={styles.container}>

@@ -12,19 +12,22 @@ import {
   DarkTheme,
   DefaultTheme,
 } from '@react-navigation/native';
-import { store } from './src/store';
+import { store, persistor } from './src/store';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
   const scheme = useColorScheme();
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <NavigationContainer
-          theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
-        >
-          <RootNavigator />
-        </NavigationContainer>
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer
+            theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
+          >
+            <RootNavigator />
+          </NavigationContainer>
+        </PersistGate>
       </Provider>
     </SafeAreaProvider>
   );
