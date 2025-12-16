@@ -5,10 +5,20 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  Alert,
 } from 'react-native';
-import { UserType } from '../store/slices/types';
+import { UserType } from '../../store/slices/types';
+import UserListSkeleton from '../../components/userList/skeletonLoader';
 
-const UserList = ({ data }: { data: UserType[] }): JSX.Element => {
+const UserList = ({
+  data,
+  loading,
+  error,
+}: {
+  data: UserType[];
+  loading: boolean;
+  error?: string | null;
+}): JSX.Element => {
   const renderUsers = ({ item }: { item: UserType }) => {
     return (
       <TouchableOpacity style={styles.userList}>
@@ -23,6 +33,12 @@ const UserList = ({ data }: { data: UserType[] }): JSX.Element => {
       </TouchableOpacity>
     );
   };
+
+  if (loading) {
+    return <UserListSkeleton />;
+  } else if (error) {
+    Alert.alert(error);
+  }
 
   return (
     <FlatList

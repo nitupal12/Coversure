@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store';
-import UserList from '../../components/userList';
+import UserList from '../../components/userList/userList';
 import { fetchUsers } from '../../store/thunks/userThunks';
 
 const UsersScreen = () => {
@@ -19,11 +19,7 @@ const UsersScreen = () => {
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size={'large'} />
-      ) : (
-        <UserList data={users} />
-      )}
+      <UserList data={users} loading={loading} error={error} />
     </View>
   );
 };
