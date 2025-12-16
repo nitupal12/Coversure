@@ -5,3 +5,8 @@ export type RenderTabIconParams = {
   color: string;
   size: number;
 };
+
+export type RootStackParamList = {
+  Tabs: undefined;
+  UserDetails: { userId: number };
+};

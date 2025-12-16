@@ -7,21 +7,19 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import { UserType } from '../../store/slices/types';
 import UserListSkeleton from '../../components/userList/skeletonLoader';
+import { useNavigation } from '@react-navigation/native';
+import { UserListType, NavigationProp } from './types';
+import { UserType } from '../../store/slices/types';
 
-const UserList = ({
-  data,
-  loading,
-  error,
-}: {
-  data: UserType[];
-  loading: boolean;
-  error?: string | null;
-}): JSX.Element => {
+const UserList = ({ data, loading, error }: UserListType): JSX.Element => {
+  const navigation = useNavigation<NavigationProp>();
   const renderUsers = ({ item }: { item: UserType }) => {
     return (
-      <TouchableOpacity style={styles.userList}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('UserDetails', { userId: item.id })}
+        style={styles.userList}
+      >
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>{item.name.charAt(0)}</Text>
         </View>
