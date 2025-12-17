@@ -58,8 +58,10 @@ const UserList = ({
       return;
     }
 
-    const filtered = data.filter(user =>
-      user.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+    const filtered = data.filter(
+      user =>
+        user.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        user.email.toLowerCase().includes(debouncedSearch.toLowerCase()),
     );
 
     setDisplayData(filtered.slice(0, PAGE_SIZE));
