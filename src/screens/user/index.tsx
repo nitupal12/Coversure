@@ -28,6 +28,7 @@ const UsersScreen = () => {
         loading={loading}
         error={error}
         onPullRefresh={() => dispatch(fetchUsers())}
+        isFromUsers={true}
       />
     </View>
   );

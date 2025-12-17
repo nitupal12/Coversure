@@ -8,5 +8,5 @@ export type RenderTabIconParams = {
 
 export type RootStackParamList = {
   Tabs: undefined;
-  UserDetails: { userId: number };
+  UserDetails: { userId: number; isFromUsers: boolean };
 };
