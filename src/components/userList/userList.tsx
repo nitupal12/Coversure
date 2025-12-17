@@ -6,7 +6,6 @@ import {
   StyleSheet,
   FlatList,
   Alert,
-  ActivityIndicator,
   TextInput,
 } from 'react-native';
 import UserListSkeleton from '../../components/userList/skeletonLoader';
@@ -14,6 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 import { UserListType, NavigationProp } from './types';
 import { UserType } from '../../store/slices/types';
 import EmptyListSVG from '../../svg/emptyList';
+import IonIcons from '@react-native-vector-icons/ionicons';
+import Loader from '../loader';
 
 const PAGE_SIZE = 9; // number of items to show at a time
 
@@ -110,9 +111,14 @@ const UserList = ({
           <Text style={styles.avatarText}>{item.name.charAt(0)}</Text>
         </View>
         <View style={styles.info}>
-          <Text style={styles.name}>Name:{item.name}</Text>
-          <Text style={styles.email}>Email:{item.email}</Text>
-          <Text style={styles.company}>Company:{item.company.name}</Text>
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.email}>
+            <IonIcons name={'mail'} size={15} color={'grey'} /> {item.email}
+          </Text>
+          <Text style={styles.company}>
+            <IonIcons name={'business'} size={15} color={'grey'} />{' '}
+            {item.company.name}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -129,11 +135,7 @@ const UserList = ({
   const renderFooter = () => {
     if (!loadingMore) return null;
 
-    return (
-      <View style={styles.footer}>
-        <ActivityIndicator size="small" />
-      </View>
-    );
+    return <Loader containerStyle={styles.footer} size="small" />;
   };
 
   return (
