@@ -12,6 +12,7 @@ import UserListSkeleton from '../../components/userList/skeletonLoader';
 import { useNavigation } from '@react-navigation/native';
 import { UserListType, NavigationProp } from './types';
 import { UserType } from '../../store/slices/types';
+import EmptyListSVG from '../../svg/emptyList';
 
 const PAGE_SIZE = 9; // number of items to show at a time
 
@@ -33,6 +34,8 @@ const UserList = ({
       // Initialize with first PAGE_SIZE items
       setDisplayData(data.slice(0, PAGE_SIZE));
       setCurrentPage(1);
+    } else {
+      setDisplayData(data);
     }
   }, [data]);
 
@@ -65,7 +68,7 @@ const UserList = ({
       setDisplayData(prev => [...prev, ...data.slice(start, end)]);
       setCurrentPage(nextPage);
       setLoadingMore(false);
-    }, 500); // simulate a small delay like API call
+    }, 1000); // simulate a small delay like API call
   };
 
   const renderUsers = ({ item }: { item: UserType }) => {
@@ -88,6 +91,8 @@ const UserList = ({
 
   if (loading) {
     return <UserListSkeleton />;
+  } else if (data.length === 0 && !loading) {
+    return <EmptyListSVG />;
   } else if (error) {
     Alert.alert(error);
   }
