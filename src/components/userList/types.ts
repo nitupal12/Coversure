@@ -7,6 +7,7 @@ export type UserListType = {
   loading: boolean;
   error?: string | null;
   onPullRefresh?: () => void;
+  isFromUsers?: boolean;
 };
 
 export type ViewModelProps = {

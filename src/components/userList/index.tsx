@@ -24,6 +24,7 @@ const UserList = ({
   loading,
   error,
   onPullRefresh,
+  isFromUsers = false,
 }: UserListType): JSX.Element => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
@@ -45,7 +46,12 @@ const UserList = ({
 
   const renderUsers = ({ item }: { item: UserType }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate('UserDetails', { userId: item.id })}
+      onPress={() =>
+        navigation.navigate('UserDetails', {
+          userId: item.id,
+          isFromUsers: isFromUsers,
+        })
+      }
       style={styles.userList}
     >
       <View style={styles.avatar}>
