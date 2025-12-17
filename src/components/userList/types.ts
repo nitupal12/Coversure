@@ -9,4 +9,9 @@ export type UserListType = {
   onPullRefresh?: () => void;
 };
 
+export type ViewModelProps = {
+  data: UserType[];
+  onPullRefresh?: () => Promise<void>;
+};
+
 export type NavigationProp = StackNavigationProp<RootStackParamList, 'Tabs'>;

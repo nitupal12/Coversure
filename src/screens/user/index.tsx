@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store';
-import UserList from '../../components/userList/userList';
+import UserList from '../../components/userList';
 import { fetchUsers } from '../../store/thunks/userThunks';
+import styles from './styles';
 
 const UsersScreen = () => {
   const { users, loading, error } = useSelector((state: RootState) => ({
@@ -28,13 +29,5 @@ const UsersScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-  },
-});
 
 export default UsersScreen;

@@ -1,7 +1,8 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store';
-import UserList from '../../components/userList/userList';
+import UserList from '../../components/userList';
+import styles from './styles';
 
 const FavUsers = () => {
   const favUsers = useSelector((state: RootState) => state.favorite.favUsers);
@@ -12,13 +13,5 @@ const FavUsers = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-  },
-});
 
 export default FavUsers;
