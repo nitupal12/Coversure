@@ -7,6 +7,7 @@ import {
   FlatList,
   Alert,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import UserListSkeleton from '../../components/userList/skeletonLoader';
 import { useNavigation } from '@react-navigation/native';
@@ -23,9 +24,11 @@ const UserList = ({
   onPullRefresh,
 }: UserListType): JSX.Element => {
   const [displayData, setDisplayData] = useState<UserType[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>('');
+  const [debouncedSearch, setDebouncedSearch] = useState<string>('');
 
   const navigation = useNavigation<NavigationProp>();
 
@@ -38,6 +41,30 @@ const UserList = ({
       setDisplayData(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchText.trim());
+    }, 400); // debounce delay (400ms)
+
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  useEffect(() => {
+    if (!debouncedSearch) {
+      // Reset list when search is cleared
+      setDisplayData(data.slice(0, PAGE_SIZE));
+      setCurrentPage(1);
+      return;
+    }
+
+    const filtered = data.filter(user =>
+      user.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+    );
+
+    setDisplayData(filtered.slice(0, PAGE_SIZE));
+    setCurrentPage(1);
+  }, [debouncedSearch, data]);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -55,7 +82,7 @@ const UserList = ({
   };
 
   const loadMore = () => {
-    if (loadingMore || refreshing) return;
+    if (loadingMore || refreshing || debouncedSearch) return;
 
     const nextPage = currentPage + 1;
     const start = currentPage * PAGE_SIZE;
@@ -108,16 +135,29 @@ const UserList = ({
   };
 
   return (
-    <FlatList
-      data={displayData}
-      keyExtractor={item => item.id.toString()}
-      renderItem={renderUsers}
-      onEndReached={loadMore}
-      onEndReachedThreshold={0.3}
-      ListFooterComponent={renderFooter}
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-    />
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          placeholder="Search user"
+          placeholderTextColor="#999"
+          style={styles.searchInput}
+          clearButtonMode="while-editing"
+          autoCorrect={false}
+          value={searchText}
+          onChangeText={setSearchText}
+        />
+      </View>
+      <FlatList
+        data={displayData}
+        keyExtractor={item => item.id.toString()}
+        renderItem={renderUsers}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.3}
+        ListFooterComponent={renderFooter}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+      />
+    </View>
   );
 };
 
@@ -126,7 +166,7 @@ export default UserList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
   header: {
     fontSize: 10,
@@ -179,5 +219,27 @@ const styles = StyleSheet.create({
   footer: {
     paddingVertical: 12,
     alignItems: 'center',
+  },
+  searchContainer: {
+    paddingHorizontal: 12,
+    paddingVertical: 18,
+    backgroundColor: '#fff',
+  },
+  searchInput: {
+    height: 44,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    fontSize: 16,
+    color: '#111827',
+
+    // Android shadow
+    elevation: 2,
+
+    // iOS shadow
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
 });
