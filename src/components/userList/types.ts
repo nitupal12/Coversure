@@ -6,6 +6,7 @@ export type UserListType = {
   data: UserType[];
   loading: boolean;
   error?: string | null;
+  onPullRefresh?: () => void;
 };
 
 export type NavigationProp = StackNavigationProp<RootStackParamList, 'Tabs'>;

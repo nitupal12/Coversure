@@ -19,7 +19,12 @@ const UsersScreen = () => {
 
   return (
     <View style={styles.container}>
-      <UserList data={users} loading={loading} error={error} />
+      <UserList
+        data={users}
+        loading={loading}
+        error={error}
+        onPullRefresh={() => dispatch(fetchUsers())}
+      />
     </View>
   );
 };

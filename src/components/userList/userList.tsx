@@ -15,10 +15,17 @@ import { UserType } from '../../store/slices/types';
 
 const PAGE_SIZE = 9; // number of items to show at a time
 
-const UserList = ({ data, loading, error }: UserListType): JSX.Element => {
+const UserList = ({
+  data,
+  loading,
+  error,
+  onPullRefresh,
+}: UserListType): JSX.Element => {
   const [displayData, setDisplayData] = useState<UserType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
   const navigation = useNavigation<NavigationProp>();
 
   useEffect(() => {
@@ -29,8 +36,23 @@ const UserList = ({ data, loading, error }: UserListType): JSX.Element => {
     }
   }, [data]);
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+
+    if (onPullRefresh) {
+      try {
+        await onPullRefresh(); // re-call API
+        setCurrentPage(1); // reset pagination
+      } catch (err) {
+        Alert.alert('Error', String(err));
+      } finally {
+        setRefreshing(false);
+      }
+    }
+  };
+
   const loadMore = () => {
-    if (loadingMore) return;
+    if (loadingMore || refreshing) return;
 
     const nextPage = currentPage + 1;
     const start = currentPage * PAGE_SIZE;
@@ -88,6 +110,8 @@ const UserList = ({ data, loading, error }: UserListType): JSX.Element => {
       onEndReached={loadMore}
       onEndReachedThreshold={0.3}
       ListFooterComponent={renderFooter}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
     />
   );
 };
