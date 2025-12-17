@@ -15,9 +15,11 @@ export const ViewModel = () => {
 
   const { userId, isFromUsers } = route.params;
 
-  const { usersDetail, loading, error } = useSelector(
-    (state: RootState) => state.usersDetails,
-  );
+  const { usersDetail, loading, error } = useSelector((state: RootState) => ({
+    usersDetail: state.usersDetails.usersDetail,
+    loading: state.usersDetails.loading,
+    error: state.usersDetails.error,
+  }));
 
   /** Fetch user details */
   useEffect(() => {
