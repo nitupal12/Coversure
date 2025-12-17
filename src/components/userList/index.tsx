@@ -14,8 +14,10 @@ import { UserType } from '../../store/slices/types';
 import UserListSkeleton from '../../components/userList/skeletonLoader';
 import EmptyListSVG from '../../svg/emptyList';
 import Loader from '../loader';
-import styles from './styles';
+import createStyles from './styles';
 import { ViewModel } from './viewModel';
+import { getUserFirstChar } from '../../utils';
+import { useTheme } from '@react-navigation/native';
 
 const UserList = ({
   data,
@@ -23,6 +25,8 @@ const UserList = ({
   error,
   onPullRefresh,
 }: UserListType): JSX.Element => {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
   const navigation = useNavigation<NavigationProp>();
 
   const {
@@ -45,7 +49,7 @@ const UserList = ({
       style={styles.userList}
     >
       <View style={styles.avatar}>
-        <Text style={styles.avatarText}>{item.name.charAt(0)}</Text>
+        <Text style={styles.avatarText}>{getUserFirstChar(item.name)}</Text>
       </View>
 
       <View style={styles.info}>

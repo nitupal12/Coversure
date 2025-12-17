@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store';
 import UserList from '../../components/userList';
 import { fetchUsers } from '../../store/thunks/userThunks';
-import styles from './styles';
+import createStyles from './styles';
+import { useTheme } from '@react-navigation/native';
 
 const UsersScreen = () => {
   const { users, loading, error } = useSelector((state: RootState) => ({
@@ -13,6 +14,8 @@ const UsersScreen = () => {
     error: state.users.error,
   }));
   const dispatch = useDispatch();
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
 
   useEffect(() => {
     dispatch(fetchUsers());
